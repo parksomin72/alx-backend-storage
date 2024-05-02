@@ -28,6 +28,11 @@ def count_requests(method: Callable) -> Callable:
 
 @count_requests
 def get_page(url: str) -> str:
-    """ Obtain the HTML content of a  URL """
+    """ Obtain the HTML content of a URL """
     req = requests.get(url)
     return req.text
+
+# Ensure the get_page function is available
+if __name__ == "__main__":
+    url = "http://google.com"
+    print(get_page(url))
