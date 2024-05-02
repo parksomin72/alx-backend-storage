@@ -10,7 +10,7 @@ redis_ = redis.Redis()
 
 
 def count_requests(method: Callable) -> Callable:
-    """ Decorator for counting and caching """
+    """ Decortator for counting """
     @wraps(method)
     def wrapper(url):  # sourcery skip: use-named-expression
         """ Wrapper for decorator """
@@ -27,19 +27,6 @@ def count_requests(method: Callable) -> Callable:
 
 @count_requests
 def get_page(url: str) -> str:
-    """ Obtain the HTML content of a URL """
+    """ Obtain the HTML content of a  URL """
     req = requests.get(url)
     return req.text
-
-def remove_cached(url: str) -> None:
-    """ Remove cached content for a URL """
-    redis_.delete(f"cached:{url}")
-
-# Fetch and cache the HTML content of http://google.com
-html_content = get_page("http://google.com")
-print(html_content)
-
-# Wait for 10 seconds or more, then remove the cached content for http://google.com
-import time
-time.sleep(10)
-remove_cached("http://google.com")
