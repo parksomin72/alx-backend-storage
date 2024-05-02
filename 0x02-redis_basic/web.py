@@ -12,7 +12,7 @@ redis_ = redis.Redis()
 def count_requests(method: Callable) -> Callable:
     """ Decorator for counting """
     @wraps(method)
-    def wrapper(url): # sourcery skip: use-named-expression 
+    def wrapper(url):
         """ Wrapper for decorator """
         print(f"Incrementing count for {url}")
         redis_.incr(f"count:{url}")
