@@ -14,7 +14,6 @@ def count_requests(method: Callable) -> Callable:
     @wraps(method)
     def wrapper(url):  # sourcery skip: use-named-expression
         """ Wrapper for decorator """
-        print(f"Incrementing count for {url}")
         redis_.incr(f"count:{url}")
         cached_html = redis_.get(f"cached:{url}")
         if cached_html:
@@ -31,18 +30,3 @@ def get_page(url: str) -> str:
     """ Obtain the HTML content of a  URL """
     req = requests.get(url)
     return req.text
-
-# Ensure the get_page function is available
-if __name__ == "__main__":
-    url = "http://google.com"
-    print(get_page(url))
-
-    # Wait for 10 seconds to check cache expiration
-    import time
-    time.sleep(10)
-
-    cached_content = redis_.get(f"cached:{url}")
-    if cached_content:
-        print("Cache not expired")
-    else:
-        print("Cache expired")
